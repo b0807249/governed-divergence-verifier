@@ -195,7 +195,7 @@ def case_m1(root: Path) -> Case:
     P2.incidences = [i for i in P2.incidences if i.key != ("safety-rules", "hostB")]
     _dump(root, P2, R)
     write_manifest(root, 2, [t for t in MANIFEST_TARGETS if t != "hostB/rules.toml"])
-    return Case("M1-silent-shrinkage", "hostB/rules.toml deleted together with its manifest row and its P entry; no waiver",
+    return Case("M1-silent-shrinkage", "hostB/rules.toml deleted together with its manifest row, its P entry and its member entry in R; no waiver",
                 root, P1, P2, R, CAP_V1, None, {"baseline": "PASS", "pro": "FAIL"})
 
 

@@ -69,11 +69,16 @@ def reconcile(root: Path, P_prev: Optional[Portfolio], P: Portfolio, R: Relation
             elif inc.waiver not in live:
                 findings.append(Finding("coverage", FAIL, f"{inc.family}@{inc.surface}", f"waiver {inc.waiver} expired; treated as retracted"))
 
-    # 2. No orphans: every observed in-scope asset maps to a relation member.
-    member_paths = {m.path for rel in R.decisions for m in rel.members}
+    # 2. No orphans: every observed in-scope asset maps to a relation member whose
+    #    incidence is expected in P.
+    member_keys = {m.path: m.key for rel in R.decisions for m in rel.members}
+    expected = {i.key for i in P.incidences if i.status == "supported"}
     for path in O.tree:
-        if path not in member_paths:
+        if path not in member_keys:
             findings.append(Finding("no-orphans", FAIL, path, "observed asset on a surface is not a member of any relation"))
+        elif member_keys[path] not in expected:
+            fam, surf = member_keys[path]
+            findings.append(Finding("no-orphans", FAIL, path, f"relation member {fam}@{surf} is not an expected incidence in P"))
 
     # 3. Grounding: anchors resolve consistently with the declared profile.
     for rid, rel in by_id.items():
@@ -157,7 +162,8 @@ def reconcile(root: Path, P_prev: Optional[Portfolio], P: Portfolio, R: Relation
                     verdict = FAIL
         rel_verdicts[rid] = verdict
 
-    # 5. Waiver-gated shrinkage: removed incidences need a waiver in R_{t+1}.
+    # 5. Waiver-gated shrinkage: support withdrawn between versions (an expected incidence
+    #    removed from P or re-marked unsupported) needs a waiver in R_{t+1}.
     if P_prev is not None:
         for key, inc in P_prev.by_key().items():
             if inc.status != "supported":
