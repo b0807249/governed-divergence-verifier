@@ -1,13 +1,18 @@
 """Baseline B4.3: fan-out generator + versioned target manifest + hash-drift checker
 + structured expiring waivers.  No independent reconciliation of P, R and O.
 
-Frozen semantics (this is the comparator the paper names, not a straw man):
+Frozen semantics (the comparator the paper names; generator-plus-lockfile tools ship
+essentially this design):
 - the manifest lists target paths with the hash each should have, plus a version number;
 - the checker compares the CURRENT tree against the CURRENT manifest: a listed target that is
   missing or whose hash differs is a drift, unless an unexpired waiver names that path;
 - manifest edits are ordinary edits; nothing compares manifest v_t with v_{t+1};
 - files on a surface that the manifest does not list are ignored (a fan-out generator would
   regenerate its own targets and does not police unrelated files).
+
+Known limits of the comparison (see README): a variant that diffed successive manifest
+versions would also flag M1, and a hash over normalized or parsed content would also pass
+B1 and B2.
 """
 from __future__ import annotations
 

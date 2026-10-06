@@ -1,4 +1,4 @@
-"""Synthetic fixture repository and the seven cases used in the paper's executable illustration.
+"""Synthetic fixture repository: the base case and the seven mutations used in the paper's executable illustration.
 
 Every case starts from the same base repository (two hosts, three asset families) and applies one
 mutation.  Expected verdicts are what the definitions in the paper say should happen; the runner
@@ -202,7 +202,7 @@ def case_m1(root: Path) -> Case:
 def case_m2a(root: Path) -> Case:
     P, R = build_base(root)
     _write(root, "hostB/hooks/report.toml", HOSTB_REPORT_TOML_REWRITTEN)
-    return Case("M2a-divergence-inside-scope", "hostB report hook rewritten (structure and key order); fixture outputs unchanged after masking",
+    return Case("M2a-allowed-divergence", "hostB report hook rewritten (structure and key order); fixture outputs unchanged after masking",
                 root, None, P, R, CAP_V1, "hostB/hooks/report.toml",
                 {"baseline": "FAIL", "baseline_waived": "PASS", "pro": "PASS"})
 
@@ -210,7 +210,7 @@ def case_m2a(root: Path) -> Case:
 def case_m2b(root: Path) -> Case:
     P, R = build_base(root)
     _write(root, "hostB/hooks/report.toml", HOSTB_REPORT_TOML_RENAMED_STATUS)
-    return Case("M2b-divergence-outside-scope", "hostB report hook renames the warn status code; output violates the shared schema",
+    return Case("M2b-scoped-contract-violation", "hostB report hook renames the warn status code; output violates the shared schema",
                 root, None, P, R, CAP_V1, "hostB/hooks/report.toml",
                 {"baseline": "FAIL", "baseline_waived": "PASS", "pro": "FAIL"})
 

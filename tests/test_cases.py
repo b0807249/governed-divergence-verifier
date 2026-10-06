@@ -26,12 +26,12 @@ class VerdictTests(unittest.TestCase):
         self._check("M1-silent-shrinkage")
         self.assertTrue(any(f.startswith("shrinkage:") for f in self.results["M1-silent-shrinkage"].pro_findings))
 
-    def test_m2a_inside_scope(self):
-        self._check("M2a-divergence-inside-scope")
+    def test_m2a_allowed_divergence(self):
+        self._check("M2a-allowed-divergence")
 
-    def test_m2b_outside_scope(self):
-        self._check("M2b-divergence-outside-scope")
-        self.assertTrue(any("schema violation" in f or "differ inside the scope" in f for f in self.results["M2b-divergence-outside-scope"].pro_findings))
+    def test_m2b_scoped_contract_violation(self):
+        self._check("M2b-scoped-contract-violation")
+        self.assertTrue(any("schema violation" in f or "differ inside the scope" in f for f in self.results["M2b-scoped-contract-violation"].pro_findings))
 
     def test_m3_unknown_surface(self):
         self._check("M3-unknown-surface")

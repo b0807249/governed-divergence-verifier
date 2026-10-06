@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "governed-divergence-verifier: a toy verifier for Governed Divergence"
+type: software
+authors:
+  - family-names: Huang
+    given-names: Po-Yu
+    orcid: "https://orcid.org/0000-0002-8682-1322"
+    affiliation: "Division of Gastroenterology and Hepatology, Department of Internal Medicine, Chi Mei Medical Center, Tainan, Taiwan"
+version: 0.1.0
+date-released: 2026-10-06
+license: MIT
+repository-code: "https://github.com/b0807249/governed-divergence-verifier"
+abstract: >-
+  Executable illustration of the Expectation-Decision-Observation (P/R/O)
+  reconciliation model for cross-platform agent assets: five invariants,
+  canonical-split and machine-contract assurance checks, a manifest-and-hash
+  baseline, and eight synthetic cases.
